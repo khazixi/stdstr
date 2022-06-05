@@ -11,4 +11,4 @@ main.o: main.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	$(RM) -f stdstr.o main.o
+	$(RM) -f stdstr.o main.o main
