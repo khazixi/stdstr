@@ -9,16 +9,17 @@
     > String meant to be modifiable
     * [x] String Data is modifiable
     * [x] Allocated on heap
-    * [ ] Allocator struct provided?
-    * [ ] Impliment Equality
-    * [ ] Impliment Python String methods
 - String Operations
     > This is the string operations library that I have under strops.h
     * [ ] Replace Function
-    * [ ] Reverse Function
-    * [ ] Equals Function
-    * [ ] Uppercase function
-    * [ ] Lowercase Function
+    * [x] Reverse Function
+    * [x] Equals Function
+    * [x] Uppercase function
+    * [x] Lowercase Function
+- Structure
+    > I am going to make the header single file to make compiling much easier
+    * [ ] Make stdstr into a single header library
 
 ## Done
 
+- Remove strops.c and strops.h

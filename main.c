@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include "stdstr.h"
-#include "strops.h"
 
 int main(void) {
-	str_view mystr = str_view_create("John");
-	str_view_info(mystr);
-
-	char *str = "I like to eat eat eat apples and bananas";
-	char *newstr = str_replace(str, "like", "red");
-	printf("%s\n", newstr);
+	str_dynamic *mystr = str_dynamic_create("like");
+	str_dynamic *mystr_2 = str_dynamic_create("like like like like like like ");
+	puts(mystr->data);
+	puts(mystr_2->data);
+	printf("%d\n", str_dynamic_count(mystr_2, mystr));
+	str_dynamic_destroy(mystr);
+	str_dynamic_destroy(mystr_2);
 }

@@ -1,3 +1,4 @@
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -12,14 +13,21 @@ str_view str_view_from_dynamic(str_dynamic *str) {
 	return (str_view){str->len, str->data};
 }
 
+bool str_view_compare(str_view a, str_view b) {
+	if (a.len != b.len) return false;
+	for(size_t i = 0; i < a.len; i++)
+		if (a.data[i] != b.data[i]) return false;
+	return true;
+}
+
 void str_view_info(str_view str) {
 	printf("String: %s\nLength: %zu\n", str.data, str.len);
 }
 
 str_dynamic *str_dynamic_create(char *str) {
 	size_t len = strlen(str);
-	str_dynamic *new_string = malloc(sizeof(str_dynamic) + len);
-	strcpy(str, new_string->data);
+	str_dynamic *new_string = malloc(sizeof(str_dynamic) + len + 1);
+	strcpy(new_string->data, str);
 	new_string->len = len;
 	return new_string;
 }
@@ -30,23 +38,62 @@ void str_dynamic_destroy(str_dynamic *str) {
 }
 
 void str_dynamic_reverse(str_dynamic *str) {
-	char *p = &str->data[0];
-	char *q = &str->data[str->len - 1];
-	char *temp;
-
-	for (size_t i = 0; i < str->len/2; i++) {	// Change the counter values so that the for loop works with addresses
-		temp = p;
-		p = q;
-		q = temp;
-		p++;
-		q--;
+	char temp[str->len + 1];
+	strcpy(temp, str->data);
+	size_t j = 0;
+	size_t i = str->len - 1;
+	while (j < str->len) {
+		str->data[j] = temp[i];
+		j++;
+		i--;
 	}
 }
 
+void str_dynamic_upper(str_dynamic *str) {
+	for(size_t i = 0; i < str->len; i++)
+		if(islower(str->data[i]))
+			str->data[i] = toupper(str->data[i]);
+}
+
+void str_dynamic_lower(str_dynamic *str) {
+	for(size_t i = 0; i < str->len; i++)
+		if(isupper(str->data[i]))
+			str->data[i] = tolower(str->data[i]);
+}
+
+bool str_dynamic_compare(str_dynamic *a, str_dynamic *b) {
+	if (a->len != b->len) return false;
+	for(size_t i = 0; i < a->len; i++)
+		if (a->data[i] != b->data[i])
+			return false;
+	return true;
+}
 
 str_dynamic *str_dynamic_from_view(str_view str) {
 	str_dynamic *new_str = malloc(sizeof(str_dynamic) + str.len);
 	new_str->len = str.len;
-	strcpy((char *)str.data, new_str->data);
+	strcpy(new_str->data, str.data);
 	return new_str;
+}
+
+str_dynamic *str_dynamic_concatenate(str_dynamic *first, str_dynamic *second) {
+	str_dynamic *dummy = malloc(sizeof *first + first->len + second->len + 1);
+	memcpy(dummy, first, (sizeof *first + first->len + 1));
+	strcat(dummy->data, second->data);
+	return dummy;
+}
+
+uint str_dynamic_count(str_dynamic *target, str_dynamic *comparison) {
+	puts("Function Activated");
+	uint count = 0;
+	for (uint i = 0; i < target->len - comparison->len; i++) {
+		printf("%d\n", i);
+		if (target->data[i] == comparison->data[0]) // This is here to lower memcmp calls
+		{
+			puts("Entered the comparison step");
+			if(memcmp(&target->data[i], comparison, comparison->len) == 0)
+				count++;
+		}
+	}
+	return count;
 }
