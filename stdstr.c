@@ -20,11 +20,28 @@ bool str_view_compare(str_view a, str_view b) {
 	return true;
 }
 
+uint str_view_count(str_view target, str_view comparison) {
+	uint count = 0;
+	for (uint i = 0; i < target.len - comparison.len + 1; i++) 	// +1 is to ensure that strings of the same length can be compared
+		if (target.data[i] == comparison.data[0]) 		// This is here to lower memcmp calls
+			if(strncmp(&target.data[i], &comparison.data[0], comparison.len) == 0)
+				count++;
+	return count;
+}
+
 void str_view_info(str_view str) {
 	printf("String: %s\nLength: %zu\n", str.data, str.len);
 }
 
-str_dynamic *str_dynamic_create(char *str) {
+str_range str_view_find(str_view target, str_view comparison) {
+	for (uint i = 0; i < target.len - comparison.len + 1; i++) 	// +1 is to ensure that strings of the same length can be compared
+		if (target.data[i] == comparison.data[0]) 		// This is here to lower memcmp calls
+			if(strncmp(&target.data[i], &comparison.data[0], comparison.len) == 0)
+				return (str_range){.valid_range={i, i+comparison.len - 1}};
+	return (str_range){.valid_range={-1, -1}};
+}
+
+str_dynamic *str_dynamic_create(const char *str) {
 	size_t len = strlen(str);
 	str_dynamic *new_string = malloc(sizeof(str_dynamic) + len + 1);
 	strcpy(new_string->data, str);
@@ -84,16 +101,18 @@ str_dynamic *str_dynamic_concatenate(str_dynamic *first, str_dynamic *second) {
 }
 
 uint str_dynamic_count(str_dynamic *target, str_dynamic *comparison) {
-	puts("Function Activated");
 	uint count = 0;
-	for (uint i = 0; i < target->len - comparison->len; i++) {
-		printf("%d\n", i);
-		if (target->data[i] == comparison->data[0]) // This is here to lower memcmp calls
-		{
-			puts("Entered the comparison step");
-			if(memcmp(&target->data[i], comparison, comparison->len) == 0)
+	for (uint i = 0; i < target->len - comparison->len + 1; i++) 	// +1 is to ensure that strings of the same length can be compared
+		if (target->data[i] == comparison->data[0]) 		// This is here to lower memcmp calls
+			if(strncmp(&target->data[i], &comparison->data[0], comparison->len) == 0)
 				count++;
-		}
-	}
 	return count;
+}
+
+str_range str_dynamic_find(str_dynamic *target, str_dynamic *comparison) {
+	for (uint i = 0; i < target->len - comparison->len + 1; i++) 	// +1 is to ensure that strings of the same length can be compared
+		if (target->data[i] == comparison->data[0]) 		// This is here to lower memcmp calls
+			if(strncmp(&target->data[i], &comparison->data[0], comparison->len) == 0)
+				return (str_range){.valid_range={i, i+comparison->len - 1}};
+	return (str_range){.valid_range={-1, -1}};
 }
