@@ -7,9 +7,6 @@
     * [x] Equals Function
     * [x] Uppercase function
     * [x] Lowercase Function
-- Structure
-    > I am going to make the header single file to make compiling much easier
-    * [ ] Make stdstr into a single header library
 
 ## Done
 
@@ -23,3 +20,6 @@
     > String meant to be modifiable
     * [x] String Data is modifiable
     * [x] Allocated on heap
+- Structure
+    > I am going to make the header single file to make compiling much easier
+    * [x] Make stdstr into a single header library

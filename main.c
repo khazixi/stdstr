@@ -1,7 +1,6 @@
 #include <stdio.h>
-#include <string.h>
+#define STDSTR_IMPLIMENTATION_H
 #include "stdstr.h"
-
 int main(void) {
 	str_dynamic *mystr = str_dynamic_create("like");
 	str_dynamic *mystr_2 = str_dynamic_create("john");
@@ -10,7 +9,9 @@ int main(void) {
 	str_view a_1 = str_view_create("Jill");
 	str_view a_2 = str_view_create("i");
 
+
 	str_range b = str_view_find(a_1, a_2);
+	printf("%d, %d\n", b.start, b.end);
 	// puts(mystr->data);
 	// puts(mystr_2->data);
 	// printf("%d\n", str_dynamic_count(mystr_2, mystr));
