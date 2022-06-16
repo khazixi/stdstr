@@ -1,15 +1,9 @@
 CC = clang
-CFLAGS = -g -Wall -Wextra -pedantic
-
-main: stdstr.o main.o
-	$(CC) $^ -o main
-
-stdstr.o: stdstr.c stdstr.h
-	$(CC) $(CFLAGS) -c $< -o $@
-
+CFLAGS = -g -Wall -Wextra -Werror -pedantic
 
 main.o: main.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) main.c -o main
 
 clean:
-	$(RM) -f *.o main
+	$(RM) -f main
+	$(RM) -rf *.dSYM
